@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+{% if username %}
+    {% if brought_answered %}
+        <body>
+            <h3>Choose Your Preferred Cuisine</h3>
+            <form action="{% url 'polls:submit' %}" method="post">
+                {% csrf_token %}
+                <input type="radio" name="choice" value="1">Mexican
+                <br>
+                <input type="radio" name="choice" value="2">Indian
+                <br>
+                <input type="text" placeholder="Input any remarks here" name="remark">
+                <button type="submit">Submit</button>
+            </form>
+        </body>
+    {% else %}
+        <head><style>
+            input[type=submit] {
+                background-color: #4CAF50;
+                border: none;
+                color: white;
+                padding: 12px 24px;
+                text-decoration: none;
+                margin: 2px 8px;
+                cursor: pointer;
+            }
+        </style></head>
+        <body>
+            <h3>Have you already brought your lunch today?</h3>
+            <form action="{% url 'polls:submit' %}" method="post">
+                {% csrf_token %}
+                <input type="submit" name="brought" value="YES">
+                <input type="submit" name="brought" value="NO">
+            </form>
+        </body>
+    {% endif %}
+{% else %}
+    <head>
+    <style>
+        body {font-family: Arial, Helvetica, sans-serif;}
+        form {border: 3px solid #f1f1f1;}
+        
+        input[type=text], input[type=password] {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        }
+        
+        button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        }
+        
+        button:hover {
+        opacity: 0.8;
+        }
+        
+        
+        .container {
+        padding: 16px;
+        }
+        
+        span.account {
+        float: right;
+        }  
+    </style>
+    </head>
+    <body>
+        <h2>Login</h2>
+        <form action="{% url 'polls:login' %}" method="post">
+            {% csrf_token %}
+            <div class="container">
+                <label for="username"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="username" required>
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" required>
+                <button type="submit">Login</button>
+            </div>
+            <div class="container" style="background-color: #f1f1f1">
+                <span class="account">Need an <a href="{% url 'polls:register' %}">account?</a></span>
+            </div>
+        </form>
+    </body>
+{% endif %}
+</html>
