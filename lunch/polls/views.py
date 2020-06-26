@@ -130,3 +130,9 @@ def records(request):
 def failure(request, code):
     context = {'errcode': code}
     return render(request, 'polls/failure.html', context)
+
+def edit(request):
+    for p in Preference.objects.filter(username=username, pub_date__year=timezone.now().year, \
+            pub_date__month=timezone.now().month, pub_date__day=timezone.now().day):
+        p.delete()
+    return HttpResponseRedirect(reverse('polls:home'))
