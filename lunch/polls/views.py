@@ -132,6 +132,9 @@ def failure(request, code):
     return render(request, 'polls/failure.html', context)
 
 def edit(request):
+    username = request.session.get('username')
+    if username == None:
+        raise PermissionDenied
     for p in Preference.objects.filter(username=username, pub_date__year=timezone.now().year, \
             pub_date__month=timezone.now().month, pub_date__day=timezone.now().day):
         p.delete()
