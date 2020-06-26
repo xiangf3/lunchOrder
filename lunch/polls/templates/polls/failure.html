@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h3>Something went wrong!</h3>
+        {% if errcode == "0" %}
+        <p>Oops, the combination of username and password doesn't exist.</p>
+        {% endif %}
+        {% if errcode == "1" %}
+        <p>Each field of your signup information needs to be longer than 0 and shorter than 32 letters.</p>
+        {% endif %}
+        {% if errcode == "2" %}
+        <p>Oops, seems this username already exists.</p>
+        {% endif %}
+        <p>Go back to <a href="{% url 'polls:home' %}">home</a>.</p>
+    </body>
+</html>

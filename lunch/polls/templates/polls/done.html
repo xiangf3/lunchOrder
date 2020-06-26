@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    #cuisines {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    #cuisines td, #cuisines th {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+    
+    #cuisines tr:nth-child(even){background-color: #f2f2f2;}
+    
+    #cuisines tr:hover {background-color: #ddd;}
+    
+    #cuisines th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
+</head>   
+<body>
+    <h3>Thank you! You have done your selection today!</h3>
+    <table id="cuisines">
+        <tr>
+            <th>Cuisines</th>
+            <th>Popularity for Today</th>
+        </tr>
+        {% for pref in total_today %}
+        <tr>
+            <td>{{pref.choice}}</td>
+            <td>{{pref.cnt}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p>Signed in as <b>{{username}}</b>,  check all <a href="{% url 'polls:records' %}">records</a> or <a href="{% url 'polls:logout' %}">log out</a>.</p>
+</body>
+</html>

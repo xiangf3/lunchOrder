@@ -1,94 +1,281 @@
 <!DOCTYPE html>
 <html>
 {% if username %}
-    {% if brought_answered %}
-        <body>
-            <h3>Choose Your Preferred Cuisine</h3>
-            <form action="{% url 'polls:submit' %}" method="post">
-                {% csrf_token %}
-                <input type="radio" name="choice" value="1">Mexican
-                <br>
-                <input type="radio" name="choice" value="2">Indian
-                <br>
-                <input type="text" placeholder="Input any remarks here" name="remark">
-                <button type="submit">Submit</button>
-            </form>
-        </body>
-    {% else %}
-        <head><style>
-            input[type=submit] {
-                background-color: #4CAF50;
-                border: none;
-                color: white;
-                padding: 12px 24px;
-                text-decoration: none;
-                margin: 2px 8px;
-                cursor: pointer;
-            }
-        </style></head>
-        <body>
-            <h3>Have you already brought your lunch today?</h3>
-            <form action="{% url 'polls:submit' %}" method="post">
-                {% csrf_token %}
-                <input type="submit" name="brought" value="YES">
-                <input type="submit" name="brought" value="NO">
-            </form>
-        </body>
-    {% endif %}
-{% else %}
-    <head>
+{% if brought_answered %}
+
+<head>
     <style>
-        body {font-family: Arial, Helvetica, sans-serif;}
-        form {border: 3px solid #f1f1f1;}
-        
-        input[type=text], input[type=password] {
-        width: 100%;
-        padding: 12px 20px;
-        margin: 8px 0;
-        display: inline-block;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
+        body,
+        html {
+            height: 100%;
+            font-family: 'Lato', sans-serif;
         }
-        
-        button {
-        background-color: #4CAF50;
-        color: white;
-        padding: 14px 20px;
-        margin: 8px 0;
-        border: none;
-        cursor: pointer;
-        width: 100%;
-        }
-        
-        button:hover {
-        opacity: 0.8;
-        }
-        
-        
+
         .container {
-        padding: 16px;
+            display: block;
+            position: relative;
+            margin: 40px auto;
+            height: auto;
+            width: 500px;
+            padding: 20px;
+        }
+
+        .container ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+        }
+
+        ul li {
+
+            display: block;
+            position: relative;
+            float: left;
+            width: 100%;
+            height: 50px;
+            border-bottom: 1px solid #333;
+        }
+
+        ul li input[type=radio] {
+            position: absolute;
+            visibility: hidden;
+        }
+
+        ul li input[type=text] {
+            width: 90%;
+            height: 35px;
+            margin: 5px 20px;
+            border:none;
+        }
+
+        ul li input[type=number] {
+            width: 40%;
+            height: 35px;
+            margin: 5px 1px;
+            border:none;
+            font-size:15px;
         }
         
-        span.account {
-        float: right;
-        }  
+        ul li button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            margin: 5px 10px;
+            cursor: pointer;
+            width: 95%;
+
+        }
+
+        ul li button:hover {
+            opacity: 0.8;
+        }
+
+        ul li label {
+            display: block;
+            position: relative;
+            font-weight: 300;
+            font-size: 1.15em;
+            padding: 12px 12px 12px 80px;
+            margin: 5px auto;
+            height: 20px;
+            z-index: 9;
+            cursor: pointer;
+            -webkit-transition: all 0.25s linear;
+        }
+
+        ul li:hover label {
+            color: #AAAAAA;
+        }
+
+        ul li .check {
+            display: block;
+            position: absolute;
+            border: 5px solid #AAAAAA;
+            border-radius: 100%;
+            height: 15px;
+            width: 15px;
+            top: 15px;
+            left: 20px;
+            z-index: 5;
+            transition: border .25s linear;
+            -webkit-transition: border .25s linear;
+        }
+
+        ul li:hover .check {
+            border: 5px solid #FFFFFF;
+        }
+
+        ul li .check::before {
+            display: block;
+            position: absolute;
+            content: '';
+            border-radius: 100%;
+            height: 17px;
+            width: 17px;
+            top: -1px;
+            left: -1px;
+            margin: auto;
+            transition: background 0.25s linear;
+            -webkit-transition: background 0.25s linear;
+        }
+
+        input[type=radio]:checked~.check {
+            border: 5px solid #4CAF50;
+        }
+
+        input[type=radio]:checked~.check::before {
+            background: #4CAF50;
+        }
+
+        input[type=radio]:checked~label {
+            color: #4CAF50;
+        }
+
+        span.budget {
+            font-size:14px;
+            margin-left:22px;
+        }
     </style>
-    </head>
-    <body>
-        <h2>Login</h2>
-        <form action="{% url 'polls:login' %}" method="post">
-            {% csrf_token %}
-            <div class="container">
-                <label for="username"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="username" required>
-                <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" required>
-                <button type="submit">Login</button>
-            </div>
-            <div class="container" style="background-color: #f1f1f1">
-                <span class="account">Need an <a href="{% url 'polls:register' %}">account?</a></span>
-            </div>
-        </form>
-    </body>
+</head>
+
+<body>
+    <form action="{% url 'polls:submit' %}" method="post">
+        {% csrf_token %}
+        <div class="container">
+            <h3>Your Preferred Cuisine for Today:</h3>
+            <ul>
+                <li>
+                    <input type="radio" id="Mexican" name="choice" value="Mexican" checked>
+                    <label for="Mexican">Mexican</label>
+                    <div class="check"></div>
+                </li>
+                <li>
+                    <input type="radio" id="Indian" name="choice" value="Indian">
+                    <label for="Indian">Indian</label>
+                    <div class="check"></div>
+                </li>
+                <li>
+                    <input type="radio" id="Italian" name="choice" value="Italian">
+                    <label for="Italian">Italian</label>
+                    <div class="check"></div>
+                </li>
+                <li>
+                    <input type="radio" id="Chinese" name="choice" value="Chinese">
+                    <label for="Chinese">Chinese</label>
+                    <div class="check"></div>
+                </li>
+                <li>
+                    <input type="radio" id="American" name="choice" value="American">
+                    <label for="American">American</label>
+                    <div class="check"></div>
+                </li>
+                <li>
+                    <span class="budget">Maximum budget for today: $</span><input type="number" id="budget" name="budget" value="20">
+                </li>
+                <li><input type="text" placeholder="Input any special preference for this cuisine." name="remark">
+                </li>
+                <li><button type="submit"><b>Submit</b></button></li>
+            </ul>
+        </div>
+    </form>
+</body>
+{% else %}
+
+<head>
+    <style>
+        input[type=submit] {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            margin: 2px 8px;
+            cursor: pointer;
+        }
+
+        input[type=submit]:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>Welcome, {{username}}! Have you already brought your lunch today?</h3>
+    <form action="{% url 'polls:submit' %}" method="post">
+        {% csrf_token %}
+        <input type="submit" name="brought" value="YES">
+        <input type="submit" name="brought" value="NO">
+    </form>
+</body>
 {% endif %}
+{% else %}
+
+<head>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        form {
+            border: 3px solid #f1f1f1;
+        }
+
+        input[type=text],
+        input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        .container {
+            padding: 16px;
+        }
+
+        span.account {
+            float: right;
+            margin-top:-6px;
+            margin-right:4px;
+            font-size:14px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Login to Poll</h2>
+    <form action="{% url 'polls:login' %}" method="post">
+        {% csrf_token %}
+        <div class="container">
+            <label for="username"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="username" required>
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+            <button type="submit"><b>Login</b></button>
+        </div>
+        <div class="container" style="background-color: #f1f1f1">
+            <span class="account"><b>Need an <a href="{% url 'polls:register' %}">account?</a></b></span>
+        </div>
+    </form>
+</body>
+{% endif %}
+
 </html>
