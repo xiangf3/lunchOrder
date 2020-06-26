@@ -109,6 +109,9 @@ def done(request):
     if username is None:
         raise PermissionDenied
 
+    if request.session.get('brought_answered') is not None:
+        del request.session['brought_answered']
+        
     if len(Preference.objects.filter(username=username, pub_date__year=timezone.now().year, \
              pub_date__month=timezone.now().month, pub_date__day=timezone.now().day)) < 1:
              return HttpResponseRedirect(reverse('polls:home'))
