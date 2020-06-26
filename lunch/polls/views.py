@@ -33,11 +33,9 @@ def home(request):
 
 def submit(request):
     username = request.session.get('username')
-    print(username)
     if username == None:
         raise PermissionDenied
     brought = request.POST.get('brought')
-    print(brought)
     if brought is not None:
         if brought=='YES':
             Preference(username=username, pub_date=timezone.now(), choice="None", remark="Have brought").save()
@@ -55,7 +53,9 @@ def submit(request):
             budget = int(budget)
         except ValueError:
             budget = 20
-        if choice is None:
+        if budget < 0:
+            budget = 0
+        if choice is None or budget is None:
             raise PermissionDenied
         Preference(username=username, pub_date=timezone.now(), choice=choice, remark=remark, budget=budget).save()
         return HttpResponseRedirect(reverse('polls:done'))
